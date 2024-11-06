@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple CRUD App</title>
+  </head>
+  <body>
+    <h1>Items</h1>
+    <ul>
+      {% for item in items %}
+      <li>{{ item.name }} - <a href="/delete/{{ item.id }}">Delete</a></li>
+      {% endfor %}
+    </ul>
+
+    <h2>Add Item</h2>
+    <form action="/add" method="POST">
+      <input type="text" name="name" placeholder="Enter item name" required />
+      <button type="submit">Add</button>
+    </form>
+  </body>
+</html>

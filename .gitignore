@@ -1,0 +1,16 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environments
+venv/
+env/
+
+# Database files
+*.db
+
+# IDE and editor files
+.vscode/
+.idea/
+.*.swp
