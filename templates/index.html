@@ -6,16 +6,36 @@
     <title>Simple CRUD App</title>
   </head>
   <body>
-    <h1>Items</h1>
+    <h1>Pizza Reviews</h1>
     <ul>
       {% for item in items %}
-      <li>{{ item.name }} - <a href="/delete/{{ item.id }}">Delete</a></li>
+      <li>
+        {{ item.name, item.score, item.location}} -
+        <a href="/delete/{{ item.id }}">Delete</a>
+      </li>
       {% endfor %}
     </ul>
 
-    <h2>Add Item</h2>
+    <h2>Add Review</h2>
     <form action="/add" method="POST">
-      <input type="text" name="name" placeholder="Enter item name" required />
+      <input
+        type="text"
+        name="name"
+        placeholder="Enter Pizza Parlor"
+        required
+      />
+      <input
+        type="text"
+        name="score"
+        placeholder="Enter Decimal Score"
+        required
+      />
+      <input
+        type="text"
+        name="location"
+        placeholder="Enter Location, i.e. Buffalo, NY"
+        required
+      />
       <button type="submit">Add</button>
     </form>
   </body>
