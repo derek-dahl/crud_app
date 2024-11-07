@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template
-from flask_sqlalchemy import SQLAlchemy
 from models import db, PizzaReview
 
 app = Flask(__name__)
