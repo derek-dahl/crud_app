@@ -1,23 +1,20 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
+from models import db, PizzaReview
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'  # SQLite for simplicity
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
 
-# Define a simple model
-class PizzaReview(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    score = db.Column(db.Float, nullable=False)
-    location = db.Column(db.String(100), nullable=False)
+# Initialize SQLAlchemy with app context
+db.init_app(app)
 
 # Create the database
 with app.app_context():
     db.create_all()
 
+# Routes
 @app.route('/')
 def index():
     items = PizzaReview.query.all()
