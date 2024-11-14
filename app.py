@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 from models import db, PizzaReview
 
 app = Flask(__name__)
@@ -22,22 +22,53 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add_item():
-    name = request.form['name']
-    score = request.form['score']
-    location = request.form['location']
+    data = request.json
+
+    if not data:
+        response = {
+            "status": "error",
+            "message": "No data provided"
+        }
+        return jsonify(response), 400
+
+
+    name = data.get('name')
+    score = data.get('score')
+    location = data.get('location')
+
+    if not name or not score or not location:
+        response = {
+            "status":"error",
+            "message":"Missing required fields: 'name', 'score', and/or 'location"
+        }
+        return jsonify(response), 400
+
     new_item = PizzaReview(name=name, score=score, location=location)
+
     db.session.add(new_item)
     db.session.commit()
-    flash('Review Added')
-    return redirect(url_for('index'))
+    response = {
+        "status": "success",
+        "message": "Item added successfully!",
+        "data": {
+            "id": new_item.id,
+            "name": new_item.name,
+            "score": new_item.score,
+            "location": new_item.location,
+        }
+    }
+
+    return jsonify(response), 201
+
+
 
 @app.route('/delete/<int:id>', methods=['GET'])
 def delete_item(id):
     item = PizzaReview.query.get(id)
     db.session.delete(item)
     db.session.commit()
-    flash('Review Deleted')
-    return redirect(url_for('index'))
+
+    return "Item deleted...", 201
 
 if __name__ == '__main__':
     app.run(port='6969', debug=True)
