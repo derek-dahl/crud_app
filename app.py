@@ -62,13 +62,21 @@ def add_item():
 
 
 
-@app.route('/delete/<int:id>', methods=['GET'])
+@app.route('/delete/<int:id>', methods=['DELETE'])
 def delete_item(id):
     item = PizzaReview.query.get(id)
+    if not item:
+        response = {
+            "status": "error",
+            "message": "Could not find item by id"
+        }
+
+        return jsonify(response), 404
+
     db.session.delete(item)
     db.session.commit()
 
-    return "Item deleted...", 201
+    return '', 204
 
 if __name__ == '__main__':
     app.run(port='6969', debug=True)
